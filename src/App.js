@@ -20,7 +20,7 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/about" element={<About />} />
           <Route
-            path="account"
+            path="/account/:username"
             element={
               <ProtextedRoute>
                 <Account />

@@ -1,8 +1,9 @@
 import { Navigate } from "react-router-dom";
-import { UserAuth } from "../context/AuthContext";
+import { AuthContext } from "../context/AuthContext";
+import { useContext  } from "react";
 
 const ProtextedRoute = ({children}) => {
-    const { user } = UserAuth();
+    const { user } = useContext(AuthContext);
 
     if (!user) {
         return <Navigate to="/" />;

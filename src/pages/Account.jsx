@@ -1,4 +1,79 @@
-import { UserAuth } from "../context/AuthContext";
+import { useState, useEffect, useContext } from "react";
+import { AccountWrapper } from "../styled/AccountWrapper";
+import { TiCamera } from "react-icons/ti";
+import { AiOutlinePlus } from "react-icons/ai";
+import { Link } from "react-router-dom";
+import Footer from "../components/Footer";
+import { AuthContext } from "../context/AuthContext";
+import axios from "axios";
+
+const Account = () => {
+  const { user } = useContext(AuthContext);
+  const publicFolder = process.env.REACT_APP_PUBLIC_FOLDER;
+
+  const [file, setFile] = useState(null);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const newPost = {
+      userId: user._id,
+    };
+    if (file) {
+      const data = new FormData();
+      const fileName = Date.now() + file.name;
+      data.append("name", fileName);
+      data.append("file", file);
+      newPost.profilePicture = fileName;
+      try {
+        await axios.post("/upload", data);
+      } catch (err) { }
+    }
+    try {
+      await axios.put(`/users/${user._id}`, newPost);
+      window.location.reload();
+    } catch (err) {
+      // TODO: bugsnag
+    }
+  }
+
+
+  return (
+    <AccountWrapper>
+      <div className="account">
+        <div className="avatar">
+          <div className="image">
+            <img src={user.profilePicture ? publicFolder + user.profilePicture : publicFolder + "noAvatar.png"} alt="" />
+          </div>
+          <form className="img_uploads" onSubmit={handleSubmit}>
+            <label htmlFor="files"><TiCamera /></label>
+            <input type="file" id="files" accept=".png,.jpeg,.jpg" onChange={(e) => setFile(e.target.files[0])} />
+            <button className="photo_button" type="submit">Subir</button>
+          </form>
+        </div>
+        
+        <div className="create_group">
+          <Link to="/createevent">
+            <div>
+              <AiOutlinePlus />
+            </div>
+          </Link>
+          <p>clica aquí para crear un evento</p>
+        </div>
+      </div>
+      <Footer />
+    </AccountWrapper>
+  )
+}
+
+export default Account;
+
+
+
+
+
+
+
+/*import { UserAuth } from "../context/AuthContext";
 import { useState, useEffect } from "react";
 import { Avatar } from '@mui/material';
 import { upload } from "../context/AuthContext";
@@ -22,14 +97,16 @@ const Account = () => {
   };
 
   const handleSubmit = () => {
+
     upload(image, user, setLoading);
+
   };
 
   useEffect(() => {
     if (user?.photoURL) {
       setPhotoURL(user.photoURL);
     }
-  }, [user]);
+  }, [user, photoURL]);
 
   return (
     <AccountWrapper>
@@ -41,7 +118,7 @@ const Account = () => {
           <div className="img_uploads">
             <label for="files"><TiCamera /></label>
             <input type="file" id="files" onChange={handleImageChange} />
-            <button disabled={loading || !image} onClick={handleSubmit}>Subir</button>
+            <button className="photo_button" onClick={handleSubmit}>Subir</button>
           </div>
         </div>
         <div className="about_me">
@@ -54,7 +131,7 @@ const Account = () => {
               <AiOutlinePlus />
             </div>
           </Link>
-          <p>clica aquí para crear un grupo</p>
+          <p>clica aquí para crear un evento</p>
         </div>
       </div>
       <Footer />
@@ -62,4 +139,4 @@ const Account = () => {
   )
 }
 
-export default Account;
+export default Account;*/

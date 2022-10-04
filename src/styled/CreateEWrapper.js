@@ -1,33 +1,31 @@
 import styled from "styled-components";
-import { Colors } from "../styled/globalStylesVariables";
+import { Colors } from "./globalStylesVariables/colors";
 
 export const CreateEWrapper = styled.div`
-    height: 100vh;
-    color: ${Colors.inputLabelColor};
-    div {
+    min-height: 100vh;
+    .form_div {
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
         display: flex;
         flex-direction: column;
         justify-content: center; 
         align-items: center;
-    }
-    .form_div {
+        -webkit-box-shadow: 0px 0px 20px -9px rgba(0,0,0,0.75);
+        -moz-box-shadow: 0px 0px 20px -9px rgba(0,0,0,0.75);
+        box-shadow: 0px 0px 20px -9px rgba(0,0,0,0.75);
+        padding: 3rem;
+        margin: 1rem;
         form {
              display: flex;
              flex-direction: column;
-             label {
-                margin: 0;
-                letter-spacing: 1px;
-             }
-             input {
-                margin-top: 30px;
-                outline: 0;
-                border-width: 0 0 2px;
-                &:focus {
-                    border-color: black;
-                }
+             gap: 2rem;
+             * {
+                width: 100%;
              }
              button {
-                margin-top: 40px;
+                margin-top: 1rem;
                 background-color: ${Colors.primeryColor};
                 border: none;
                 padding: 8px;
@@ -36,10 +34,19 @@ export const CreateEWrapper = styled.div`
                 letter-spacing: 0.5rem;
                 font-weight: 900;
                 color: white;
+                transition: 0.5s;
                 &:hover {
                     background-color: ${Colors.primaryColorHover};
                 }
              }
+             .mapbox {
+                
+             }
         }       
+    }
+    @media(min-width: 400px) {
+        form {
+            width: 300px;
+        }
     }
 `

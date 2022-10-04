@@ -1,89 +1,64 @@
-import { NavLink, useNavigate } from "react-router-dom";
-import { UserAuth } from "../context/AuthContext";
-import { NavbarWrapper } from "../styled/NavbarWrapper";
+import { Link } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
+import { useContext } from "react";
 
 const Navbar = () => {
-  const { user, logout } = UserAuth();
-  const navigate = useNavigate();
 
-  const handleLogout = async () => {
-    try {
-      await logout();
-      navigate("/");
-    } catch (e) {
-      console.log(e.message);
-    }
-  }
+  const { user, dispatch } = useContext(AuthContext);
+
+  const handleLogout = () => {
+    dispatch({ type: "LOGOUT" });
+    localStorage.clear();
+    window.location.replace("/signin");
+  };  
 
   return (
-    <NavbarWrapper>
-      <div className="logo">
-        <img src="./assets/logo.png" alt="logo" />
+    <>
+      <div className="navbar bg-base-100">
+        <div className="navbar-start">
+          <div className="dropdown">
+            <label tabIndex={0} className="btn btn-ghost btn-circle">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
+            </label>
+            <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
+              <li><Link to="/">Home</Link></li>
+              <li><Link to="/about">About</Link></li>
+              {!user && <li><Link to="signin">Sign in</Link></li>}
+              {
+                user &&
+                <li><Link
+                  to={"/account/" + user.username}
+                >
+                  {
+                    user && user.username.split("")[0]
+                  }
+                </Link></li>
+              }
+              {user &&
+                <li><button onClick={handleLogout}>Cerrar Sesión</button> </li>
+              }
+            </ul>
+          </div>
+        </div>
+        <div className="navbar-center">
+          <Link to="/" className="btn btn-ghost normal-case text-xl personalized-fonts">Metodo Silva</Link>
+        </div>
+        <div className="navbar-end">
+          <button className="btn btn-ghost btn-circle">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+          </button>
+          <button className="btn btn-ghost btn-circle">
+            <div className="indicator">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
+              <span className="badge badge-xs badge-primary indicator-item"></span>
+            </div>
+          </button>
+        </div>
       </div>
-      <div className="links">
-        <NavLink to="/"
-          style={({ isActive }) =>
-            isActive ? activeStyle : nonActiveStyle
-          }>
-          Home
-        </NavLink>
-        <NavLink to="/about"
-          style={({ isActive }) =>
-            isActive ? activeStyle : nonActiveStyle
-          }>
-          About
-        </NavLink>
-        {
-          !user && <NavLink to="signin"
-            style={({ isActive }) =>
-              isActive ? activeStyle : nonActiveStyle
-            }>
-            Sign In
-          </NavLink>
-        }
-        {
-          user &&
-          <NavLink to="/account"
-            style={({ isActive }) =>
-              isActive ? activeAccount : nonActiveAccount
-            }>
-            {user.email}
-          </NavLink>
-        }
-        {user && <div className="user_logout">
-          <button onClick={handleLogout}>Cerrar Sesión</button>
-        </div>}
-      </div>
-    </NavbarWrapper>
+    </>
   )
 }
 
 export default Navbar;
 
-export const activeStyle = {
-  margin: "15px",
-  color: "#2c6e49",
-  fontSize: "27px",
-  textDecoration: "none",
-};
 
-export const nonActiveStyle = {
-  margin: "15px",
-  textDecoration: "none",
-  color: "#4c956c",
-  fontSize: "25px",
-};
-
-export const activeAccount = {
-  margin: "15px",
-  fontSize: "15px",
-  color: "#2c6e49",
-  textDecoration: "none",
-};
-
-export const nonActiveAccount = {
-  margin: "15px",
-  fontSize: "10px",
-  textDecoration: "none",
-  color: "#4c956c",
-};

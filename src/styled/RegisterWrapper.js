@@ -1,22 +1,28 @@
 import styled from "styled-components";
-import { Colors } from "./globalStylesVariables";
+import { Colors } from "./globalStylesVariables/colors";
+import './globalStylesVariables/globalStyles.css';
 
 export const RegisterWrapper = styled.div`
     color: #d68c45;
-    height: 100vh;
+    margin: 2rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     .container {
-        padding: 60px 30px;
+        padding: 1rem;
         border-radius: 10px;
-        box-shadow: 5px 10px 18px #888888;
+        -webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.11);
+        -moz-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.11);
+        box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.11);
         .sign-header {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            h2 {
+                font-size: 1.5rem;
+            }
             p {
                span {
                     margin: 4px;
@@ -32,47 +38,38 @@ export const RegisterWrapper = styled.div`
                }
             }
         }
-        .sign-form {
+        hr {
+            margin: 2rem;
+        }
+        form {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            form {
+            button {
+                background-color: ${Colors.primeryColor};
+                cursor: pointer;
+                border: none;
+                color: white;
+                font-size: 16px;
+                border-radius: 5px;
+                padding: 8px  12px;
+                margin-top: 20px;
+                &:hover {
+                    background-color: ${Colors.primaryColorHover};
+                }
+            }
+            div {
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
-                button {
-                    background-color: ${Colors.primeryColor};
-                    cursor: pointer;
-                    border: none;
-                    color: white;
-                    font-size: 16px;
-                    border-radius: 5px;
-                    padding: 8px  12px;
-                    margin-top: 20px;
-                    &:hover {
-                        background-color: ${Colors.primaryColorHover};
-                    }
+                padding: 10px;
+                input {
+                    padding: 0 30px;
+                    margin: 10px;
                 }
-                div {
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    align-items: center;
-                    padding: 10px;
-                    input {
-                        padding: 7px 20px;
-                        margin: 10px;
-                        border-radius: 5px;
-                        border-color: ${Colors.primeryColor};
-                        &:focus {
-                            outline: none;
-                            box-shadow: 0 0 5px${Colors.primeryColor};
-                        }
-                    }
-                } 
-            }                  
+            }                             
         }
     }   
 `;
